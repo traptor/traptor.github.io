@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>My first three.js app</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+	<body>
+		<script src="js/three.js"></script>
+		<script>
+			var scene = new THREE.Scene();
+			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+			var renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth/2, window.innerHeight/2 );
+			document.body.appendChild( renderer.domElement );
+			
+			//point properties
+			var point_size = 1;
+			var point_quality = 8;
+			var geometry = new THREE.SphereGeometry( point_size, point_quality, point_quality );
+			var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+			var point = new THREE.Mesh( geometry, material );
+			
+			scene.add( point );
+			camera.position.z = 10;
+			
+			//for moving objects
+			var controls = new THREE.DragControls( objects, camera, renderer.domElement );
+			
+			// add event listener to highlight dragged objects
+
+			controls.addEventListener( 'dragstart', function ( event ) {
+
+				event.object.material.emissive.set( 0xaaaaaa );
+
+				} );
+
+controls.addEventListener( 'dragend', function ( event ) {
+
+	event.object.material.emissive.set( 0x000000 );
+
+} );
+			
+			function animate(){
+				requestAnimationFrame( animate );
+				
+				point.rotation.x += 0.00;
+				point.rotation.y += 0.00;
+								
+				renderer.render( scene, camera );
+			};
+			animate();
+		</script>
+	</body>
+</html>
